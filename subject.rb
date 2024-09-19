@@ -1,7 +1,7 @@
 class Subject
   attr_accessor :id, :name
 
-  @@records = []
+  @@record = []
 
   def initialize(id, name)
     @id = id
@@ -13,7 +13,7 @@ class Subject
   end
 
   def destroy
-    @@records.delete(self)
+    @@record.delete(self)
   end
 
   def display
@@ -21,10 +21,10 @@ class Subject
   end
 
   def self.all
-    @@records
+    @@record
   end
 
   def self.find(id)
-    @@records.find { |subject| subject.id == id }
+    @@record.find { |subject| subject.id == id }
   end
 end
