@@ -28,4 +28,41 @@ def new_student
   end
 end
 
-new_student
+def delete_student
+  puts "Delete a student"
+
+  # Prompt for student ID
+  puts "Enter student ID to delete:"
+  student_id = gets.chomp.to_i
+
+  # Find the student by ID
+  student = Student.find(student_id)
+
+  if student
+    student.destroy
+    # Confirm student's successful deletion
+    unless Student.find(student_id)
+      puts "Student destroyed successfully!"
+    end
+  else
+    puts "Student with ID #{student_id} not found."
+  end
+end
+
+def main_menu
+    puts "Choose an action:"
+    puts "1. Add a new student"
+    puts "2. Delete a student"
+    choice = gets.chomp.to_i
+
+    case choice
+    when 1
+      new_student
+    when 2
+      delete_student
+    else
+      puts "Invalid choice, please try again."
+    end
+end
+
+main_menu
