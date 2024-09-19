@@ -82,17 +82,33 @@ def new_subject
   end
 end
 
+def delete_subject
+  puts "Delete a subject"
+  puts "Enter subject ID to delete:"
+  subject_id = gets.chomp.to_i
+
+  if subject = Subject.find(subject_id)
+    subject.destroy
+    puts "Subject destroyed successfully!"
+  else
+    puts "Subject with ID #{subject_id} not found."
+  end
+end
+
 def subject_management
   while true
     puts "Subject Management"
     puts "1. Add a new subject"
-    puts "2. Back to main menu"
+    puts "2. Delete a subject"
+    puts "3. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
     when 1
       new_subject
     when 2
+      delete_subject
+    when 3
       break
     else
       puts "Invalid choice, please try again."
