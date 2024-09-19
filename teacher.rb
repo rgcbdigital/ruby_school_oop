@@ -1,7 +1,7 @@
 class Teacher
   attr_accessor :id, :name, :birth_date, :email, :phone_number, :department
 
-  @@records = []
+  @@record = []
 
   def initialize(id, name, birth_date, email, phone_number, department)
     @id = id

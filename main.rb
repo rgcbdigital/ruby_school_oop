@@ -1,6 +1,7 @@
 require_relative 'student'
 require_relative 'course'
 require_relative 'subject'
+require_relative 'teacher'
 
 def new_student
   puts "Add new student"
@@ -95,6 +96,49 @@ def delete_subject
   end
 end
 
+def new_teacher
+  puts "Add new teacher"
+  teacher_id = Teacher.all.size + 1
+  puts "Enter teacher name:"
+  teacher_name = gets.chomp
+  puts "Enter teacher birth date (YYYY-MM-DD):"
+  teacher_birth_date = gets.chomp
+  puts "Enter teacher email:"
+  teacher_email = gets.chomp
+  puts "Enter teacher phone number:"
+  teacher_phone_number = gets.chomp
+  puts "Enter teacher department:"
+  teacher_department = gets.chomp
+  teacher = Teacher.new(teacher_id, teacher_name, teacher_birth_date, teacher_email, teacher_phone_number, teacher_department)
+  teacher.save
+
+  if Teacher.find(teacher_id)
+    puts "Teacher added successfully!"
+    puts teacher.display
+  else
+    puts "Failed to add teacher."
+  end
+end
+
+def teacher_management
+  while true
+    puts "Teacher Management"
+    puts "1. Add a new teacher"
+    puts "2. Back to main menu"
+    choice = gets.chomp.to_i
+
+    case choice
+    when 1
+      new_teacher
+    when 2
+      break
+    else
+      puts "Invalid choice, please try again."
+    end
+  end
+end
+
+
 def subject_management
   while true
     puts "Subject Management"
@@ -164,7 +208,8 @@ def main_menu
     puts "1. Student Management"
     puts "2. Course Management"
     puts "3. Subject Management"
-    puts "4. Exit"
+    puts "4. Teacher Management"
+    puts "5. Exit"
     choice = gets.chomp.to_i
 
     case choice
@@ -175,6 +220,8 @@ def main_menu
     when 3
       subject_management
     when 4
+      teacher_management
+    when 5
       puts "Exiting..."
       break
     else
