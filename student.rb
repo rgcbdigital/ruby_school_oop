@@ -2,6 +2,15 @@ class Student
   attr_accessor :id, :name, :birth_date, :email, :phone_number
 
   @@record = []
+
+  def initialize(id, name, birth_date, email, phone_number)
+    @id = id
+    @name = name
+    @birth_date = birth_date
+    @email = email
+    @phone_number = phone_number
+  end
+
   def save
     @@record.prepend(self)
   end
@@ -11,7 +20,7 @@ class Student
   end
 
   def display
-    puts "ID: #{self.id} Name: #{self.name} Birth_date: #{self.birth_date} Email: #{self.email}  Phone: #{self.phone_number}"
+    puts "ID: #{id} Name: #{name} Birth Date: #{birth_date} Email: #{email} Phone: #{phone_number}"
   end
 
   def self.all
@@ -19,10 +28,10 @@ class Student
   end
 
   def self.find(id)
-    return @@record.find { |student| student.id == id }
+    @@record.find { |student| student.id == id }
   end
 
   def self.find_by_email(email)
-    @@record.find{|student_email| student_email == email}
+    @@record.find { |student| student.email == email }
   end
 end
