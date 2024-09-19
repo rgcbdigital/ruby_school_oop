@@ -1,4 +1,5 @@
 require_relative 'student'
+require_relative 'course'
 
 def new_student
   puts "Add new student"
@@ -35,12 +36,41 @@ def delete_student
   end
 end
 
-def main_menu
+def new_course
+  puts "Add new course"
+  course_id = Course.all.size + 1
+  puts "Enter course name:"
+  course_name = gets.chomp
+  course = Course.new(course_id, course_name)
+  course.save
+
+  if Course.find(course_id)
+    puts "Course added successfully!"
+    puts course.display
+  else
+    puts "Failed to add course."
+  end
+end
+
+def delete_course
+  puts "Delete a course"
+  puts "Enter course ID to delete:"
+  course_id = gets.chomp.to_i
+
+  if course = Course.find(course_id)
+    course.destroy
+    puts "Course destroyed successfully!"
+  else
+    puts "Course with ID #{course_id} not found."
+  end
+end
+
+def student_management
   while true
-    puts "Choose an action:"
+    puts "Student Management"
     puts "1. Add a new student"
     puts "2. Delete a student"
-    puts "3. Exit"
+    puts "3. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -48,6 +78,48 @@ def main_menu
       new_student
     when 2
       delete_student
+    when 3
+      break
+    else
+      puts "Invalid choice, please try again."
+    end
+  end
+end
+
+def course_management
+  while true
+    puts "Course Management"
+    puts "1. Add a new course"
+    puts "2. Delete a course"
+    puts "3. Back to main menu"
+    choice = gets.chomp.to_i
+
+    case choice
+    when 1
+      new_course
+    when 2
+      delete_course
+    when 3
+      break
+    else
+      puts "Invalid choice, please try again."
+    end
+  end
+end
+
+def main_menu
+  while true
+    puts "Main Menu"
+    puts "1. Student Management"
+    puts "2. Course Management"
+    puts "3. Exit"
+    choice = gets.chomp.to_i
+
+    case choice
+    when 1
+      student_management
+    when 2
+      course_management
     when 3
       puts "Exiting..."
       break
