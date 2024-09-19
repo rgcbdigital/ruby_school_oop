@@ -120,10 +120,24 @@ def new_teacher
   end
 end
 
+def delete_teacher
+  puts "Delete a teacher"
+  puts "Enter teacher ID to delete:"
+  teacher_id = gets.chomp.to_i
+
+  if teacher = Teacher.find(teacher_id)
+    teacher.destroy
+    puts "Teacher destroyed successfully!"
+  else
+    puts "Teacher with ID #{teacher_id} not found."
+  end
+end
+
 def teacher_management
   while true
     puts "Teacher Management"
     puts "1. Add a new teacher"
+    puts "2. Delete a teacher"
     puts "2. Back to main menu"
     choice = gets.chomp.to_i
 
@@ -131,6 +145,8 @@ def teacher_management
     when 1
       new_teacher
     when 2
+      delete_teacher
+    when 3
       break
     else
       puts "Invalid choice, please try again."
