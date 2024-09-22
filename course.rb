@@ -29,6 +29,15 @@ class Course
     "ID: #{id}, Name: #{name}"
   end
 
+  def students
+    Student.all.select { |student| student.course_id == @id }
+  end
+
+  def subjects
+    course_subjects = CourseSubject.find_by_course_id(@id)
+    course_subjects.map { |cs| Subject.find(cs.subject_id) }.compact
+  end
+
   def self.all
     @@record ||= []
     @@record.select { |course| course.deleted_at.nil? }

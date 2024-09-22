@@ -10,10 +10,37 @@ def display_course_details
   course = Course.find(course_id)
 
   if course
-    puts "Course Details: ID: #{course.id}, Name: #{course.name}"
-    display_course_subjects(course_id)
+    course.display
+    while true
+      puts "1. View Students"
+      puts "2. View Subjects"
+      puts "3. Back to Course Management"
+      print "Please choose an option: "
+      choice = gets.chomp.to_i
+
+      case choice
+      when 1
+        display_course_students(course)
+      when 2
+        display_course_subjects(course.id)
+      when 3
+        break
+      else
+        puts "Invalid option. Please try again."
+      end
+    end
   else
     puts "Course not found."
+  end
+end
+
+def display_course_students(course)
+  puts "Students in Course ID #{course.id}:"
+  students = course.students
+  if students.empty?
+    puts "No students enrolled in this course."
+  else
+    students.each { |student| student.display }
   end
 end
 
@@ -23,15 +50,14 @@ def display_course_subjects(course_id)
     puts "No subjects assigned to this course."
   else
     puts "Subjects assigned to Course ID #{course_id}:"
-    subjects.each { |subject| puts subject.display }
-
+    subjects.each { |subject| puts "Subject ID: #{subject.id}, Name: #{subject.name}" }
   end
 end
 
 def add_subjects_to_course
+  display_available_courses
   print "Enter Course ID to add subjects: "
   course_id = gets.chomp.to_i
-  display_available_courses
 
   while true
     print "Enter Subject ID to add (or type 'done' to finish): "

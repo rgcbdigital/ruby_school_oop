@@ -26,6 +26,14 @@ class CourseSubject
     puts "Course Subject deleted."
   end
 
+  def subject
+    Subject.find(@subject_id)
+  end
+
+  def name
+    subject.name
+  end
+
   def display
     subject = Subject.find(@subject_id)
     subject_name = subject ? subject.name : "Unknown"
@@ -44,5 +52,3 @@ class CourseSubject
     @@record.select { |record| record.course_id == course_id }
   end
 end
-
-
