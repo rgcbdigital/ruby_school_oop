@@ -2,6 +2,83 @@ require_relative 'student'
 require_relative 'course'
 require_relative 'subject'
 require_relative 'teacher'
+require_relative 'course_subject'
+
+def display_course_details
+  print "Enter Course ID to display details: "
+  course_id = gets.chomp.to_i
+  course = Course.find(course_id)
+
+  if course
+    puts "Course Details: ID: #{course.id}, Name: #{course.name}"
+    display_course_subjects(course_id)
+  else
+    puts "Course not found."
+  end
+end
+
+def display_course_subjects(course_id)
+  subjects = CourseSubject.find_by_course_id(course_id)
+  if subjects.empty?
+    puts "No subjects assigned to this course."
+  else
+    puts "Subjects assigned to Course ID #{course_id}:"
+    subjects.each { |subject| puts subject.display }
+
+  end
+end
+
+def add_subjects_to_course
+  print "Enter Course ID to add subjects: "
+  course_id = gets.chomp.to_i
+  display_available_courses
+
+  while true
+    print "Enter Subject ID to add (or type 'done' to finish): "
+    input = gets.chomp
+    break if input.downcase == 'done'
+
+    subject_id = input.to_i
+    if Subject.find(subject_id)
+      existing_record = CourseSubject.all.find { |cs| cs.course_id == course_id && cs.subject_id == subject_id }
+      unless existing_record
+        cs_id = CourseSubject.all.size + 1
+        course_subject = CourseSubject.new(cs_id, course_id, subject_id)
+        course_subject.save
+      else
+        puts "This subject is already with the course."
+      end
+    else
+      puts "Subject not found."
+    end
+  end
+end
+
+def remove_subjects_from_course
+  print "Enter Course ID to remove subjects: "
+  course_id = gets.chomp.to_i
+
+  subjects = CourseSubject.find_by_course_id(course_id)
+  if subjects.empty?
+    puts "No subjects assigned to this course."
+  else
+    while true
+      display_course_subjects(course_id)
+      print "Enter Subject ID to remove (or type 'done' to finish): "
+      input = gets.chomp
+      break if input.downcase == 'done'
+
+      subject_id = input.to_i
+      cs_record = subjects.find { |cs| cs.subject_id == subject_id }
+      if cs_record
+        cs_record.destroy
+        subjects.delete(cs_record)
+      else
+        puts "Subject is not with this course."
+      end
+    end
+  end
+end
 
 def display_available_courses
   puts "Available Courses:"
@@ -330,7 +407,10 @@ def course_management
     puts "2. Delete a course"
     puts "3. Display all Courses"
     puts "4. Edit Course"
-    puts "5. Back to School Management"
+    puts "5. Display Course Details"
+    puts "6. Add Subjects to Course"
+    puts "7. Remove Subjects from Course"
+    puts "8. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -343,6 +423,12 @@ def course_management
     when 4
       edit_course
     when 5
+      display_course_details
+    when 6
+      add_subjects_to_course
+    when 7
+      remove_subjects_from_course
+    when 8
       break
     else
       puts "Invalid choice, please try again."

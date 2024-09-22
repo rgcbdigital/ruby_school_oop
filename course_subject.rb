@@ -37,4 +37,10 @@ class CourseSubject
   def self.find(id)
     @@record.find { |record| record.id == id }
   end
+
+  def self.find_by_course_id(course_id)
+    @@record.select { |record| record.course_id == course_id }
+  end
 end
+
+
