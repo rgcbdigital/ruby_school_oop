@@ -27,7 +27,9 @@ class CourseSubject
   end
 
   def display
-    "ID: #{@id}, Course ID: #{@course_id}, Subject ID: #{@subject_id}"
+    subject = Subject.find(@subject_id)
+    subject_name = subject ? subject.name : "Unknown"
+    "ID: #{@id}, Course ID: #{@course_id}, Subject ID: #{@subject_id}, Subject Name: #{subject_name}"
   end
 
   def self.all
