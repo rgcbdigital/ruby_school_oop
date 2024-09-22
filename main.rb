@@ -38,6 +38,14 @@ def delete_student
   end
 end
 
+def display_students
+  puts "Displaying all students:"
+  Student.all.each do |student|
+    print student.display
+  end
+end
+
+
 def new_course
   puts "Add new course"
   course_id = Course.all.size + 1
@@ -67,6 +75,13 @@ def delete_course
   end
 end
 
+def display_courses
+  puts "Displaying all courses:"
+  Course.all.each do |course|
+    puts course.display
+  end
+end
+
 def new_subject
   puts "Add new subject"
   subject_id = Subject.all.size + 1
@@ -93,6 +108,13 @@ def delete_subject
     puts "Subject destroyed successfully!"
   else
     puts "Subject with ID #{subject_id} not found."
+  end
+end
+
+def display_subjects
+  puts "Displaying all subjects:"
+  Subject.all.each do |subject|
+    puts subject.display
   end
 end
 
@@ -133,12 +155,20 @@ def delete_teacher
   end
 end
 
+def display_teachers
+  puts "Displaying all teachers:"
+  Teacher.all.each do |teacher|
+    puts teacher.display
+  end
+end
+
 def teacher_management
   while true
     puts "Teacher Management"
     puts "1. Add a new teacher"
     puts "2. Delete a teacher"
-    puts "2. Back to main menu"
+    puts "3. Display all teachers"
+    puts "4. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -147,6 +177,8 @@ def teacher_management
     when 2
       delete_teacher
     when 3
+      display_teachers
+    when 4
       break
     else
       puts "Invalid choice, please try again."
@@ -160,7 +192,8 @@ def subject_management
     puts "Subject Management"
     puts "1. Add a new subject"
     puts "2. Delete a subject"
-    puts "3. Back to main menu"
+    puts "3. Display all subjects:"
+    puts "4. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -169,6 +202,8 @@ def subject_management
     when 2
       delete_subject
     when 3
+      display_subjects
+    when 4
       break
     else
       puts "Invalid choice, please try again."
@@ -181,7 +216,8 @@ def student_management
     puts "Student Management"
     puts "1. Add a new student"
     puts "2. Delete a student"
-    puts "3. Back to main menu"
+    puts "3. Display all students"
+    puts "4. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -190,6 +226,8 @@ def student_management
     when 2
       delete_student
     when 3
+      display_students
+    when 4
       break
     else
       puts "Invalid choice, please try again."
@@ -202,7 +240,8 @@ def course_management
     puts "Course Management"
     puts "1. Add a new course"
     puts "2. Delete a course"
-    puts "3. Back to main menu"
+    puts "3. Display all Courses"
+    puts "4. Back to main menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -211,7 +250,10 @@ def course_management
     when 2
       delete_course
     when 3
+      display_courses
+    when 4
       break
+
     else
       puts "Invalid choice, please try again."
     end
