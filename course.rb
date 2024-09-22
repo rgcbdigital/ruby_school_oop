@@ -1,11 +1,12 @@
 class Course
-  attr_accessor :id, :name
+  attr_accessor :id, :name, :deleted_at
 
   @@record = []
 
   def initialize(id, name)
     @id = id
     @name = name
+    @deleted_at = nil
   end
 
   def save
@@ -13,7 +14,7 @@ class Course
   end
 
   def destroy
-    @@record.delete(self)
+    @deleted_at = Time.now
   end
 
   def display
@@ -21,7 +22,8 @@ class Course
   end
 
   def self.all
-    @@record
+    @@record ||= []
+    @@record.select { |course| course.deleted_at.nil? }
   end
 
   def self.find(id)
