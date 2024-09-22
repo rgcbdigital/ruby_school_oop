@@ -13,7 +13,18 @@ class Student
   end
 
   def save
-    @@record.prepend(self)
+    existing_record = @@record.find { |student| student.id == @id }
+    if existing_record
+      existing_record.name = @name
+      existing_record.birth_date = @birth_date
+      existing_record.email = @email
+      existing_record.phone_number = @phone_number
+      existing_record.deleted_at = @deleted_at
+      puts "Student updated successfully!"
+    else
+      @@record << self
+      puts "Student created successfully!"
+    end
   end
 
   def destroy

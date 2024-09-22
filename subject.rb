@@ -10,7 +10,16 @@ class Subject
   end
 
   def save
-    @@record.prepend(self)
+    existing_record = @@record.find { |subject| subject.id == @id }
+
+    if existing_record
+      existing_record.name = @name
+      existing_record.deleted_at = @deleted_at
+      puts "Subject updated successfully!"
+    else
+      @@record << self
+      puts "Subject created successfully!"
+    end
   end
 
   def destroy

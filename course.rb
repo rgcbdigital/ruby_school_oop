@@ -10,7 +10,15 @@ class Course
   end
 
   def save
-    @@record.prepend(self)
+    existing_record = @@record.find { |course| course.id == @id }
+    if existing_record
+      existing_record.name = @name
+      existing_record.deleted_at = @deleted_at
+      puts "Course updated successfully!"
+    else
+      @@record << self
+      puts "Course created successfully!"
+    end
   end
 
   def destroy

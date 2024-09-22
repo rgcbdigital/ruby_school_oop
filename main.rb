@@ -45,6 +45,25 @@ def display_students
   end
 end
 
+def edit_student
+  print "Enter Student ID to edit: "
+  id = gets.chomp.to_i
+  student = Student.find(id)
+  if student
+    print "Enter New Student Name: "
+    student.name = gets.chomp
+    print "Enter New Birth Date: "
+    student.birth_date = gets.chomp
+    print "Enter New Email: "
+    student.email = gets.chomp
+    print "Enter New Phone Number: "
+    student.phone_number = gets.chomp
+
+    student.save
+  else
+    puts "Student not found."
+  end
+end
 
 def new_course
   puts "Add new course"
@@ -79,6 +98,19 @@ def display_courses
   puts "Displaying all courses:"
   Course.all.each do |course|
     puts course.display
+  end
+end
+
+def edit_course
+  print "Enter Course ID to edit: "
+  id = gets.chomp.to_i
+  course = Course.find(id)
+  if course
+    print "Enter New Course Name: "
+    course.name = gets.chomp
+    course.save
+  else
+    puts "Course not found."
   end
 end
 
@@ -118,6 +150,18 @@ def display_subjects
   end
 end
 
+def edit_subject
+  print "Enter Subject ID to edit: "
+  id = gets.chomp.to_i
+  subject = Subject.find(id)
+  if subject
+    print "Enter New Subject Name: "
+    subject.name = gets.chomp
+    subject.save
+  else
+    puts "Subject not found."
+  end
+end
 def new_teacher
   puts "Add new teacher"
   teacher_id = Teacher.all.size + 1
@@ -162,13 +206,35 @@ def display_teachers
   end
 end
 
+def edit_teacher
+  print "Enter Teacher ID to edit: "
+  id = gets.chomp.to_i
+  teacher = Teacher.find(id)
+  if teacher
+    print "Enter New Teacher Name: "
+    teacher.name = gets.chomp
+    print "Enter New Birth Date: "
+    teacher.birth_date = gets.chomp
+    print "Enter New Email: "
+    teacher.email = gets.chomp
+    print "Enter New Phone Number: "
+    teacher.phone_number = gets.chomp
+    print "Enter New Department: "
+    teacher.department = gets.chomp
+    teacher.save
+  else
+    puts "Teacher not found."
+  end
+end
+
 def teacher_management
   while true
     puts "Teacher Management"
     puts "1. Add a new teacher"
     puts "2. Delete a teacher"
     puts "3. Display all teachers"
-    puts "4. Back to main menu"
+    puts "4. Edit Teacher"
+    puts "5. Return to Main Menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -179,6 +245,8 @@ def teacher_management
     when 3
       display_teachers
     when 4
+      edit_teacher
+    when 5
       break
     else
       puts "Invalid choice, please try again."
@@ -193,7 +261,8 @@ def subject_management
     puts "1. Add a new subject"
     puts "2. Delete a subject"
     puts "3. Display all subjects:"
-    puts "4. Back to main menu"
+    puts "4. Edit Subject"
+    puts "5. Return to Main Menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -204,6 +273,8 @@ def subject_management
     when 3
       display_subjects
     when 4
+      edit_subject
+    when 5
       break
     else
       puts "Invalid choice, please try again."
@@ -217,7 +288,8 @@ def student_management
     puts "1. Add a new student"
     puts "2. Delete a student"
     puts "3. Display all students"
-    puts "4. Back to main menu"
+    puts "4. Edit Student"
+    puts "5. Return to Main Menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -228,6 +300,8 @@ def student_management
     when 3
       display_students
     when 4
+      edit_student
+    when 5
       break
     else
       puts "Invalid choice, please try again."
@@ -241,7 +315,8 @@ def course_management
     puts "1. Add a new course"
     puts "2. Delete a course"
     puts "3. Display all Courses"
-    puts "4. Back to main menu"
+    puts "4. Edit Course"
+    puts "5. Return to Main Menu"
     choice = gets.chomp.to_i
 
     case choice
@@ -252,8 +327,9 @@ def course_management
     when 3
       display_courses
     when 4
+      edit_course
+    when 5
       break
-
     else
       puts "Invalid choice, please try again."
     end
