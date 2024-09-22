@@ -7,6 +7,7 @@ class Teacher
     @id = id
     @name = name
     @birth_date = birth_date
+    @email = email
     @phone_number = phone_number
     @department = department
   end
@@ -20,7 +21,7 @@ class Teacher
   end
 
   def display
-    "ID: #{@id}, Name: #{@name}, Birth Date: #{@birth_date}, Email: #{@department}, Department: #{@department}"
+    "ID: #{@id}, Name: #{@name}, Birth Date: #{@birth_date}, Email: #{@email}, Phone: #{@phone_number}, Department: #{@department}"
   end
 
   def self.all
