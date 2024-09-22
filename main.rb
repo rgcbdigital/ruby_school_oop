@@ -248,7 +248,7 @@ def teacher_management
     puts "2. Delete a teacher"
     puts "3. Display all teachers"
     puts "4. Edit Teacher"
-    puts "5. Return to Main Menu"
+    puts "5. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -276,7 +276,7 @@ def subject_management
     puts "2. Delete a subject"
     puts "3. Display all subjects:"
     puts "4. Edit Subject"
-    puts "5. Return to Main Menu"
+    puts "5. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -303,7 +303,7 @@ def student_management
     puts "2. Delete a student"
     puts "3. Display all students"
     puts "4. Edit Student"
-    puts "5. Return to Main Menu"
+    puts "5. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -330,7 +330,7 @@ def course_management
     puts "2. Delete a course"
     puts "3. Display all Courses"
     puts "4. Edit Course"
-    puts "5. Return to Main Menu"
+    puts "5. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -352,7 +352,7 @@ end
 
 def main_menu
   while true
-    puts "Main Menu"
+    puts "School Management"
     puts "1. Student Management"
     puts "2. Course Management"
     puts "3. Subject Management"
