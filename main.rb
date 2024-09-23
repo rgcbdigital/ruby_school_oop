@@ -5,6 +5,29 @@ require_relative 'teacher'
 require_relative 'course_subject'
 require_relative 'student_subject'
 
+def display_student_details_with_subjects
+  print "Enter Student ID to display details: "
+  print "Enter Student ID to display details: "
+  student_id = gets.chomp.to_i
+  student = Student.find(student_id)
+
+  if student
+    puts "Student Details:"
+    puts student.display
+    puts "Enrolled Subjects:"
+    subjects = student.subjects
+    if subjects.empty?
+      puts "No subjects enrolled."
+    else
+      subjects.each do |subject|
+        puts "Subject ID: #{subject.id}, Name: #{subject.name}"
+      end
+    end
+  else
+    puts "Student not found."
+  end
+end
+
 def enroll_student_in_course_subjects(student_id, course_id)
   course = Course.find(course_id)
   return unless course
@@ -417,8 +440,9 @@ def student_management
     puts "1. Add a new student"
     puts "2. Delete a student"
     puts "3. Display all students"
-    puts "4. Edit Student"
-    puts "5. Back to School Management"
+    puts "4. Display student details with subjects"
+    puts "5. Edit Student"
+    puts "6. Back to School Management"
     choice = gets.chomp.to_i
 
     case choice
@@ -429,8 +453,10 @@ def student_management
     when 3
       display_students
     when 4
-      edit_student
+      display_student_details_with_subjects
     when 5
+      edit_student
+    when 6
       break
     else
       puts "Invalid choice, please try again."
