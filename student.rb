@@ -38,6 +38,15 @@ class Student
     puts "ID: #{@id}, Name: #{@name}, Course: #{course_name}"
   end
 
+  def enroll_in_course_subjects
+    course = Course.find(@course_id)
+    return unless course
+    course.subjects.each do |subject|
+      student_subject = StudentSubject.new(nil, @id, subject.id)
+      student_subject.save
+    end
+  end
+
   def self.all
     @@record ||= []
     @@record.select { |student| student.deleted_at.nil? }

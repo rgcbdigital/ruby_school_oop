@@ -3,6 +3,17 @@ require_relative 'course'
 require_relative 'subject'
 require_relative 'teacher'
 require_relative 'course_subject'
+require_relative 'student_subject'
+
+def enroll_student_in_course_subjects(student_id, course_id)
+  course = Course.find(course_id)
+  return unless course
+
+  course.subjects.each do |subject|
+    student_subject = StudentSubject.new(nil, student_id, subject.id) # id will be handled by the storage logic
+    student_subject.save
+  end
+end
 
 def display_course_details
   print "Enter Course ID to display details: "
@@ -131,7 +142,8 @@ def new_student
   student.save
 
   if Student.find(student_id)
-    puts "Student added successfully!"
+    enroll_student_in_course_subjects(student_id, course_id)
+    puts "Student added and enrolled successfully!"
     student.display
   else
     puts "Failed to add student."
