@@ -38,6 +38,11 @@ class Student
     puts "ID: #{@id}, Name: #{@name}, Course: #{course_name}"
   end
 
+  def subjects
+    student_subjects = StudentSubject.find_by_student_id(@id)
+    student_subjects.map { |ss| Subject.find(ss.subject_id) }
+  end
+
   def enroll_in_course_subjects
     course = Course.find(@course_id)
     return unless course
