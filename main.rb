@@ -33,7 +33,7 @@ def enroll_student_in_course_subjects(student_id, course_id)
   return unless course
 
   course.subjects.each do |subject|
-    student_subject = StudentSubject.new(nil, student_id, subject.id) # id will be handled by the storage logic
+    student_subject = StudentSubject.new(nil, student_id, subject.id)
     student_subject.save
   end
 end
