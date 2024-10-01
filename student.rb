@@ -1,5 +1,5 @@
-require_relative 'school'
-class Student < School
+require_relative 'persons'
+class Student < Persons
   attr_accessor :id, :name, :birth_date, :email, :phone_number, :course_id, :deleted_at
 
   @@record = []
@@ -36,7 +36,7 @@ class Student < School
 
   def display
     course_name = Course.find(@course_id)&.name || "No Course Assigned"
-    puts "ID: #{@id}, Name: #{@name}, Course: #{course_name}"
+    "ID: #{@id}, Name: #{@name}, Course: #{course_name}"
   end
 
   def subjects

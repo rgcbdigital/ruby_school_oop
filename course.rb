@@ -26,7 +26,7 @@ class Course
   end
 
   def display
-    "ID: #{id}, Name: #{name}"
+    puts "ID: #{id}, Name: #{name}"
   end
 
   def students

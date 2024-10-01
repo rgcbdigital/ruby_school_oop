@@ -1,5 +1,5 @@
-require_relative 'school'
-class Teacher < School
+require_relative 'persons'
+class Teacher < Persons
   attr_accessor :id, :name, :birth_date, :email, :phone_number, :department, :deleted_at
 
   @@record = []

@@ -5,10 +5,13 @@ require_relative 'teacher'
 require_relative 'course_subject'
 require_relative 'student_subject'
 
+def prompt(message)
+  print message
+  gets.chomp
+end
+
 def display_student_details_with_subjects
-  print "Enter Student ID to display details: "
-  print "Enter Student ID to display details: "
-  student_id = gets.chomp.to_i
+  student_id = prompt("Enter Student ID to display details: ").to_i
   student = Student.find(student_id)
 
   if student
@@ -19,9 +22,7 @@ def display_student_details_with_subjects
     if subjects.empty?
       puts "No subjects enrolled."
     else
-      subjects.each do |subject|
-        puts "Subject ID: #{subject.id}, Name: #{subject.name}"
-      end
+      subjects.each { |subject| puts "Subject ID: #{subject.id}, Name: #{subject.name}" }
     end
   else
     puts "Student not found."
@@ -39,18 +40,16 @@ def enroll_student_in_course_subjects(student_id, course_id)
 end
 
 def display_course_details
-  print "Enter Course ID to display details: "
-  course_id = gets.chomp.to_i
+  course_id = prompt("Enter Course ID to display details: ").to_i
   course = Course.find(course_id)
 
   if course
     course.display
-    while true
+    loop do
       puts "1. View Students"
       puts "2. View Subjects"
       puts "3. Back to Course Management"
-      print "Please choose an option: "
-      choice = gets.chomp.to_i
+      choice = prompt("Please choose an option: ").to_i
 
       case choice
       when 1
@@ -90,12 +89,10 @@ end
 
 def add_subjects_to_course
   display_available_courses
-  print "Enter Course ID to add subjects: "
-  course_id = gets.chomp.to_i
+  course_id = prompt("Enter Course ID to add subjects: ").to_i
 
-  while true
-    print "Enter Subject ID to add (or type 'done' to finish): "
-    input = gets.chomp
+  loop do
+    input = prompt("Enter Subject ID to add (or type 'done' to finish): ")
     break if input.downcase == 'done'
 
     subject_id = input.to_i
@@ -115,17 +112,15 @@ def add_subjects_to_course
 end
 
 def remove_subjects_from_course
-  print "Enter Course ID to remove subjects: "
-  course_id = gets.chomp.to_i
+  course_id = prompt("Enter Course ID to remove subjects: ").to_i
 
   subjects = CourseSubject.find_by_course_id(course_id)
   if subjects.empty?
     puts "No subjects assigned to this course."
   else
-    while true
+    loop do
       display_course_subjects(course_id)
-      print "Enter Subject ID to remove (or type 'done' to finish): "
-      input = gets.chomp
+      input = prompt("Enter Subject ID to remove (or type 'done' to finish): ")
       break if input.downcase == 'done'
 
       subject_id = input.to_i
@@ -148,24 +143,29 @@ end
 def new_student
   puts "Add new student"
   student_id = Student.all.size + 1
-  puts "Enter student name:"
-  student_name = gets.chomp
-  puts "Enter student birth date (YYYY-MM-DD):"
-  student_birth_date = gets.chomp
-  puts "Enter student email:"
-  student_email = gets.chomp
-  puts "Enter student phone number:"
-  student_phone_number = gets.chomp
+  student_name = prompt("Enter student name: ")
+  student_birth_date = prompt("Enter student birth date (YYYY-MM-DD): ")
+  student_email = prompt("Enter student email: ")
+  student_phone_number = prompt("Enter student phone number: ")
+
+  available_courses = Course.all
+  if available_courses.empty?
+    puts "No available courses. Please add a course first."
+    return
+  end
 
   display_available_courses
-  print "Enter Course ID for the student: "
-  course_id = gets.chomp.to_i
+  course_id = prompt("Enter Course ID for the student: ").to_i
 
-  student = Student.new(student_id, student_name, student_birth_date, student_email, student_phone_number, course_id)
+  create_student(student_id, student_name, student_birth_date, student_email, student_phone_number, course_id)
+end
+
+def create_student(id, name, birth_date, email, phone_number, course_id)
+  student = Student.new(id, name, birth_date, email, phone_number, course_id)
   student.save
 
-  if Student.find(student_id)
-    enroll_student_in_course_subjects(student_id, course_id)
+  if Student.find(id)
+    enroll_student_in_course_subjects(id, course_id)
     puts "Student added and enrolled successfully!"
     student.display
   else
@@ -175,8 +175,7 @@ end
 
 def delete_student
   puts "Delete a student"
-  puts "Enter student ID to delete:"
-  student_id = gets.chomp.to_i
+  student_id = prompt("Enter student ID to delete: ").to_i
 
   if student = Student.find(student_id)
     student.destroy
@@ -188,28 +187,20 @@ end
 
 def display_students
   puts "Displaying all students:"
-  Student.all.each do |student|
-    print student.display
-  end
+  Student.all.each { |student| print student.display }
 end
 
 def edit_student
-  print "Enter Student ID to edit: "
-  id = gets.chomp.to_i
+  id = prompt("Enter Student ID to edit: ").to_i
   student = Student.find(id)
   if student
-    print "Enter New Student Name: "
-    student.name = gets.chomp
-    print "Enter New Birth Date: "
-    student.birth_date = gets.chomp
-    print "Enter New Email: "
-    student.email = gets.chomp
-    print "Enter New Phone Number: "
-    student.phone_number = gets.chomp
+    student.name = prompt("Enter New Student Name: ")
+    student.birth_date = prompt("Enter New Birth Date: ")
+    student.email = prompt("Enter New Email: ")
+    student.phone_number = prompt("Enter New Phone Number: ")
 
     display_available_courses
-    print "Enter New Course ID for the student: "
-    student.course_id = gets.chomp.to_i
+    student.course_id = prompt("Enter New Course ID for the student: ").to_i
 
     student.save
   else
@@ -220,8 +211,7 @@ end
 def new_course
   puts "Add new course"
   course_id = Course.all.size + 1
-  puts "Enter course name:"
-  course_name = gets.chomp
+  course_name = prompt("Enter course name: ")
   course = Course.new(course_id, course_name)
   course.save
 
@@ -235,8 +225,7 @@ end
 
 def delete_course
   puts "Delete a course"
-  puts "Enter course ID to delete:"
-  course_id = gets.chomp.to_i
+  course_id = prompt("Enter course ID to delete: ").to_i
 
   if course = Course.find(course_id)
     course.destroy
@@ -248,18 +237,14 @@ end
 
 def display_courses
   puts "Displaying all courses:"
-  Course.all.each do |course|
-    puts course.display
-  end
+  Course.all.each { |course| puts course.display }
 end
 
 def edit_course
-  print "Enter Course ID to edit: "
-  id = gets.chomp.to_i
+  id = prompt("Enter Course ID to edit: ").to_i
   course = Course.find(id)
   if course
-    print "Enter New Course Name: "
-    course.name = gets.chomp
+    course.name = prompt("Enter New Course Name: ")
     course.save
   else
     puts "Course not found."
@@ -269,8 +254,7 @@ end
 def new_subject
   puts "Add new subject"
   subject_id = Subject.all.size + 1
-  puts "Enter subject name:"
-  subject_name = gets.chomp
+  subject_name = prompt("Enter subject name: ")
   subject = Subject.new(subject_id, subject_name)
   subject.save
 
@@ -284,8 +268,7 @@ end
 
 def delete_subject
   puts "Delete a subject"
-  puts "Enter subject ID to delete:"
-  subject_id = gets.chomp.to_i
+  subject_id = prompt("Enter subject ID to delete: ").to_i
 
   if subject = Subject.find(subject_id)
     subject.destroy
@@ -297,36 +280,28 @@ end
 
 def display_subjects
   puts "Displaying all subjects:"
-  Subject.all.each do |subject|
-    puts subject.display
-  end
+  Subject.all.each { |subject| puts subject.display }
 end
 
 def edit_subject
-  print "Enter Subject ID to edit: "
-  id = gets.chomp.to_i
+  id = prompt("Enter Subject ID to edit: ").to_i
   subject = Subject.find(id)
   if subject
-    print "Enter New Subject Name: "
-    subject.name = gets.chomp
+    subject.name = prompt("Enter New Subject Name: ")
     subject.save
   else
     puts "Subject not found."
   end
 end
+
 def new_teacher
   puts "Add new teacher"
   teacher_id = Teacher.all.size + 1
-  puts "Enter teacher name:"
-  teacher_name = gets.chomp
-  puts "Enter teacher birth date (YYYY-MM-DD):"
-  teacher_birth_date = gets.chomp
-  puts "Enter teacher email:"
-  teacher_email = gets.chomp
-  puts "Enter teacher phone number:"
-  teacher_phone_number = gets.chomp
-  puts "Enter teacher department:"
-  teacher_department = gets.chomp
+  teacher_name = prompt("Enter teacher name: ")
+  teacher_birth_date = prompt("Enter teacher birth date (YYYY-MM-DD): ")
+  teacher_email = prompt("Enter teacher email: ")
+  teacher_phone_number = prompt("Enter teacher phone number: ")
+  teacher_department = prompt("Enter teacher department: ")
   teacher = Teacher.new(teacher_id, teacher_name, teacher_birth_date, teacher_email, teacher_phone_number, teacher_department)
   teacher.save
 
@@ -340,8 +315,7 @@ end
 
 def delete_teacher
   puts "Delete a teacher"
-  puts "Enter teacher ID to delete:"
-  teacher_id = gets.chomp.to_i
+  teacher_id = prompt("Enter teacher ID to delete: ").to_i
 
   if teacher = Teacher.find(teacher_id)
     teacher.destroy
@@ -353,26 +327,18 @@ end
 
 def display_teachers
   puts "Displaying all teachers:"
-  Teacher.all.each do |teacher|
-    puts teacher.display
-  end
+  Teacher.all.each { |teacher| puts teacher.display }
 end
 
 def edit_teacher
-  print "Enter Teacher ID to edit: "
-  id = gets.chomp.to_i
+  id = prompt("Enter Teacher ID to edit: ").to_i
   teacher = Teacher.find(id)
   if teacher
-    print "Enter New Teacher Name: "
-    teacher.name = gets.chomp
-    print "Enter New Birth Date: "
-    teacher.birth_date = gets.chomp
-    print "Enter New Email: "
-    teacher.email = gets.chomp
-    print "Enter New Phone Number: "
-    teacher.phone_number = gets.chomp
-    print "Enter New Department: "
-    teacher.department = gets.chomp
+    teacher.name = prompt("Enter New Teacher Name: ")
+    teacher.birth_date = prompt("Enter New Birth Date: ")
+    teacher.email = prompt("Enter New Email: ")
+    teacher.phone_number = prompt("Enter New Phone Number: ")
+    teacher.department = prompt("Enter New Department: ")
     teacher.save
   else
     puts "Teacher not found."
@@ -380,14 +346,14 @@ def edit_teacher
 end
 
 def teacher_management
-  while true
+  loop do
     puts "Teacher Management"
     puts "1. Add a new teacher"
     puts "2. Delete a teacher"
     puts "3. Display all teachers"
     puts "4. Edit Teacher"
     puts "5. Back to School Management"
-    choice = gets.chomp.to_i
+    choice = prompt("Please choose an option: ").to_i
 
     case choice
     when 1
@@ -406,16 +372,15 @@ def teacher_management
   end
 end
 
-
 def subject_management
-  while true
+  loop do
     puts "Subject Management"
     puts "1. Add a new subject"
     puts "2. Delete a subject"
     puts "3. Display all subjects:"
     puts "4. Edit Subject"
     puts "5. Back to School Management"
-    choice = gets.chomp.to_i
+    choice = prompt("Please choose an option: ").to_i
 
     case choice
     when 1
@@ -435,7 +400,7 @@ def subject_management
 end
 
 def student_management
-  while true
+  loop do
     puts "Student Management"
     puts "1. Add a new student"
     puts "2. Delete a student"
@@ -443,7 +408,7 @@ def student_management
     puts "4. Display student details with subjects"
     puts "5. Edit Student"
     puts "6. Back to School Management"
-    choice = gets.chomp.to_i
+    choice = prompt("Please choose an option: ").to_i
 
     case choice
     when 1
@@ -465,7 +430,7 @@ def student_management
 end
 
 def course_management
-  while true
+  loop do
     puts "Course Management"
     puts "1. Add a new course"
     puts "2. Delete a course"
@@ -475,7 +440,7 @@ def course_management
     puts "6. Add Subjects to Course"
     puts "7. Remove Subjects from Course"
     puts "8. Back to School Management"
-    choice = gets.chomp.to_i
+    choice = prompt("Please choose an option: ").to_i
 
     case choice
     when 1
@@ -501,14 +466,14 @@ def course_management
 end
 
 def main_menu
-  while true
+  loop do
     puts "School Management"
     puts "1. Student Management"
     puts "2. Course Management"
     puts "3. Subject Management"
     puts "4. Teacher Management"
     puts "5. Exit"
-    choice = gets.chomp.to_i
+    choice = prompt("Please choose an option: ").to_i
 
     case choice
     when 1
